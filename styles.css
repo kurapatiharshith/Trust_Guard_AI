@@ -1,0 +1,190 @@
+/* Styles for the browser extension elements */
+
+/* Dark mode detection */
+@media (prefers-color-scheme: light) {
+  :root {
+    --redacted-bg: #000000;
+    --redacted-hover-bg: #333333;
+    --unredacted-color: #ff0000;
+    --tooltip-bg: #333333;
+    --tooltip-text: #ffffff;
+    --warning-bg: #ff4444;
+    --warning-text: #ffffff;
+    --warning-button-bg: #ffffff;
+    --warning-button-text: #ff4444;
+    --panel-bg: #ffffff;
+    --panel-text: #000000;
+    --notification-bg: #333333;
+    --notification-text: #ffffff;
+    --overlay-bg: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --redacted-bg: #444444;
+    --redacted-hover-bg: #666666;
+    --unredacted-color: #ff6b6b;
+    --tooltip-bg: #666666;
+    --tooltip-text: #ffffff;
+    --warning-bg: #b33939;
+    --warning-text: #ffffff;
+    --warning-button-bg: #e1e1e1;
+    --warning-button-text: #b33939;
+    --panel-bg: #2d2d2d;
+    --panel-text: #e1e1e1;
+    --notification-bg: #555555;
+    --notification-text: #ffffff;
+    --overlay-bg: rgba(0, 0, 0, 0.7);
+  }
+}
+
+.redacted-content {
+  background-color: var(--redacted-bg) !important;
+  color: transparent !important;
+  border-radius: 3px !important;
+  cursor: help !important;
+  position: relative !important;
+  display: inline-block !important;
+  padding: 0 2px !important;
+  margin: 0 1px !important;
+  z-index: 1000 !important;
+}
+
+/* Improved hover tooltip for redacted content */
+.redacted-content::after {
+  content: attr(data-original) !important;
+  position: absolute !important;
+  bottom: 120% !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  background-color: var(--tooltip-bg) !important;
+  color: var(--tooltip-text) !important;
+  padding: 5px 10px !important;
+  border-radius: 3px !important;
+  font-size: 12px !important;
+  white-space: pre-wrap !important;
+  z-index: 10003 !important;
+  pointer-events: none !important;
+  width: max-content !important;
+  max-width: 300px !important;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.3) !important;
+  transition: opacity 0.2s ease-in-out !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+  word-break: break-word !important;
+}
+
+/* Add arrow to tooltip */
+.redacted-content::before {
+  content: '' !important;
+  position: absolute !important;
+  top: -5px !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  border-width: 5px !important;
+  border-style: solid !important;
+  border-color: var(--tooltip-bg) transparent transparent transparent !important;
+  z-index: 10003 !important;
+  transition: opacity 0.2s ease-in-out !important;
+  opacity: 0 !important;
+  visibility: hidden !important;
+}
+
+.redacted-content:hover::after,
+.redacted-content:hover::before {
+  opacity: 1 !important;
+  visibility: visible !important;
+  transition-delay: 0.5s !important;
+}
+
+/* prevent tooltip from interfering with clicks */
+.redacted-content.active::after,
+.redacted-content.active::before,
+.redacted-content[data-selected="true"]::after,
+.redacted-content[data-selected="true"]::before {
+  display: none !important;
+}
+
+.redacted-content.unredacted {
+  background-color: transparent !important;
+  color: var(--unredacted-color) !important;
+  text-decoration: underline wavy var(--unredacted-color) !important;
+}
+
+.safety-notification {
+  transition: opacity 0.5s ease-in-out;
+  opacity: 1;
+  pointer-events: auto !important;
+}
+
+.warning-popup::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--overlay-bg);
+  z-index: 10000;
+}
+
+.warning-popup {
+  position: fixed !important;
+  z-index: 10001 !important;
+  pointer-events: auto !important;
+}
+
+/* Analysis panel styles for dark/light mode */
+.analysis-panel {
+  position: fixed !important;
+  z-index: 10002 !important;
+}
+
+.analysis-panel > div {
+  background-color: var(--panel-bg) !important;
+  color: var(--panel-text) !important;
+}
+
+.simple-notification {
+  background-color: var(--notification-bg) !important;
+  color: var(--notification-text) !important;
+}
+
+/* Button styles */
+.safety-notification button,
+.warning-popup button,
+.analysis-panel button {
+  padding: 8px 16px !important;
+  margin: 5px !important;
+  border: none !important;
+  border-radius: 4px !important;
+  cursor: pointer !important;
+  font-weight: bold !important;
+  z-index: 10003 !important;
+  pointer-events: auto !important;
+}
+
+.warning-popup button {
+  background-color: var(--warning-button-bg) !important;
+  color: var(--warning-button-text) !important;
+}
+
+/* Keep consistent colors regardless of mode */
+#export-btn {
+  background-color: #34a853 !important;
+  color: white !important;
+}
+
+#export-btn:hover {
+  background-color: #2d9249 !important;
+}
+
+#close-analysis-btn {
+  background-color: #ea4335 !important;
+  color: white !important;
+}
+
+#close-analysis-btn:hover {
+  background-color: #d33426 !important;
+}
